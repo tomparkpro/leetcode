@@ -1,7 +1,5 @@
 package pro.tompark.leetcode.days30;
 
-import java.util.Arrays;
-
 /**
  * Given a string containing only three types of characters: '(', ')' and '*',
  * write a function to check whether this string is valid. We define the validity of a string by these rules:
@@ -34,30 +32,35 @@ public class Day16ValidParenthesisString {
         s = "(*)"; // t
         s = "(*))"; // t
         s = ")("; // f
-        s = "()()"; // t
+//        s = "()()"; // t
 
         System.out.print(checkValidString(s));
     }
 
     public static boolean checkValidString(String s) {
-        if (s == null || s.length() < 1 || s.length() > 100) return false;
+        if (s.length() < 1) return true;
         boolean isValid = true;
 
         char[] prs = s.toCharArray();
-        int len = prs.length;
-        int limit = (len % 2 == 0) ? len/2 : len/2 + 1;
+        int rBalance = 0;
+        int lBalance = 0;
 
-        for (int i = 0; i < limit; i++) {
-            char start = prs[i];
-            char end = prs[len - i -1];
-            if (start == '(') {
-                if (end == '(') {
-                    isValid = false;
-                    break;
-                }
-            } else if (start == ')') {
+        for (int i = 0; i < prs.length; i++) {
+            if (prs[i] == ')') {
+                rBalance--;
+            } else {
+                rBalance++;
+            }
+
+            if (prs[prs.length - i - 1] == '(') {
+                lBalance--;
+            } else {
+                lBalance++;
+            }
+
+            if (rBalance < 0 || lBalance < 0) {
                 isValid = false;
-            } else if (start == '*') {
+                break;
             }
         }
 
