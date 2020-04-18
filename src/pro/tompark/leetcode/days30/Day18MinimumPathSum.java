@@ -1,88 +1,87 @@
 package pro.tompark.leetcode.days30;
 
 /**
- * Given a 2d grid map of '1's (land) and '0's (water), count the number of islands.
- * An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically.
- * You may assume all four edges of the grid are all surrounded by water.
+ * Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.
  *
- * Example 1:
+ * Note: You can only move either down or right at any point in time.
  *
- * Input:
- * 11110
- * 11010
- * 11000
- * 00000
- *
- * Output: 1
- *
- *
- * Example 2:
+ * Example:
  *
  * Input:
- * 11000
- * 11000
- * 00100
- * 00011
+ * [
+ *   [1,3,1],
+ *   [1,5,1],
+ *   [4,2,1]
+ * ]
  *
- * Output: 3
+ * Output: 7
+ *
+ * Explanation: Because the path 1→3→1→1→1 minimizes the sum.
  */
-public class Day17NumberOfIslands {
+public class Day18MinimumPathSum {
 
     public static void main(String[] args) {
-        char[][] grid = {
-                {'1', '1', '1', '1', '0'},
-                {'1', '1', '0', '1', '0'},
-                {'1', '1', '0', '0', '0'},
-                {'0', '0', '0', '0', '0'}};
-//        grid = new char[][] {
-//                {'1', '1', '0', '0', '0'},
-//                {'1', '1', '0', '0', '0'},
-//                {'0', '0', '1', '0', '0'},
-//                {'0', '0', '0', '1', '1'}};
-//        grid = new char[][] {
-//                {'1', '1', '1'},
-//                {'0', '1', '0'},
-//                {'1', '1', '1'}};
+        int[][] grid = {
+                {1, 3, 1},
+                {1, 5, 1},
+                {4, 2, 1}};
 
-        System.out.println(numIslands(grid));
+        System.out.println(minPathSum(grid));
     }
 
-    public static int numIslands(char[][] grid) {
-        int count = 0;
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                if (grid[i][j] == '1') {
-                    count++;
-                    mark(grid, i, j);
-                }
+    public static int minPathSum(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        for (int i = 1; i < n; i++) {
+            grid[0][i] = grid[0][i - 1] + grid[0][i];
+        }
+        for (int i = 1; i < m; i++) {
+            grid[i][0] = grid[i - 1][0] + grid[i][0];
+        }
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                grid[i][j] = grid[i][j] + Math.min(grid[i - 1][j], grid[i][j - 1]);
             }
         }
-        return count;
+
+        return grid[m - 1][n - 1];
     }
 
-    private static void mark(char[][] grid, int i, int j) {
-        if (i >=  grid.length || j >= grid[i].length) {
-            return;
+    /**
+     * Time Limit Exceeded
+     */
+    public static int minPathSum2(int[][] grid) {
+        return minPath2(grid, 0, 0);
+    }
+
+    private static int minPath2(int[][] grid, int i, int j) {
+        if (i == grid.length - 1 && j == grid[i].length - 1) {
+            return grid[i][j];
         }
 
-        if (grid[i][j] == '1') {
-            grid[i][j] = '*';
-            // right
-            if (j+1 < grid[i].length && grid[i][j+1] == '1') {
-                mark(grid, i, j+1);
-            }
-            // left
-            if (j-1 >= 0 && grid[i][j-1] == '1') {
-                mark(grid, i, j-1);
-            }
-            // up
-            if (i -1 >= 0 && grid[i-1][j] == '1') {
-                mark(grid, i-1, j);
-            }
-            // down
-            if (i + 1 < grid.length && grid[i+1][j] == '1') {
-                mark(grid, i+1, j);
-            }
+        int right = -1;
+        int down = -1;
+
+        // right
+        if (j < grid[i].length - 1) {
+            right = minPath2(grid, i, j+1);
+        }
+
+        // down
+        if (i < grid.length - 1) {
+            down = minPath2(grid, i+1, j);
+        }
+
+        if (right >= 0 && down >= 0) {
+            return grid[i][j] + Math.min(right, down);
+        } else if (right >= 0) {
+            return grid[i][j] + right;
+        } else if (down >= 0) {
+            return grid[i][j] + down;
+        } else {
+            return grid[i][j];
         }
     }
 }
