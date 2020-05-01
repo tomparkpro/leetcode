@@ -33,6 +33,21 @@ public class Day1FirstBadVersion {
     /* The isBadVersion API is defined in the parent class VersionControl.
           boolean isBadVersion(int version); */
     public static int firstBadVersion(int n) {
+        int start = 1, end = n;
+
+        while (start < end) {
+            int mid = start + (end - start) / 2;
+            if (isBadVersion(mid)) {
+                end = mid;
+            } else {
+                start = mid + 1;
+            }
+        }
+
+        return start;
+    }
+
+    public static int firstBadVersion2(int n) {
         if (n == 1) return n;
         return findBadVersion(1, n);
     }
