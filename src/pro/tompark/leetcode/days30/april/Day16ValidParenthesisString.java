@@ -1,4 +1,4 @@
-package pro.tompark.leetcode.days30;
+package pro.tompark.leetcode.days30.april;
 
 /**
  * Given a string containing only three types of characters: '(', ')' and '*',

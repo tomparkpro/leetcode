@@ -1,4 +1,4 @@
-package pro.tompark.leetcode.days30;
+package pro.tompark.leetcode.days30.april;
 
 /**
  * Say you have an array for which the ith element is the price of a given stock on day i.

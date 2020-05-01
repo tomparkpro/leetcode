@@ -1,4 +1,4 @@
-package pro.tompark.leetcode.days30;
+package pro.tompark.leetcode.days30.april;
 
 /**
  * Given two strings S and T, return if they are equal when both are typed into empty text editors. # means a backspace character.

@@ -1,4 +1,4 @@
-package pro.tompark.leetcode.days30;
+package pro.tompark.leetcode.days30.april;
 
 /**
  * Check If a String Is a Valid Sequence from Root to Leaves Path in a Binary Tree

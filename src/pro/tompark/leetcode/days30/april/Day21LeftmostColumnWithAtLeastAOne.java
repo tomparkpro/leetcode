@@ -1,4 +1,4 @@
-package pro.tompark.leetcode.days30;
+package pro.tompark.leetcode.days30.april;
 
 import java.util.ArrayList;
 import java.util.List;

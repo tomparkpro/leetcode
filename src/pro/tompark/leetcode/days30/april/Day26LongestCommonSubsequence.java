@@ -1,4 +1,4 @@
-package pro.tompark.leetcode.days30;
+package pro.tompark.leetcode.days30.april;
 
 /**
  * Given two strings text1 and text2, return the length of their longest common subsequence.
