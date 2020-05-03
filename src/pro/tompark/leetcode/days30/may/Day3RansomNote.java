@@ -1,59 +1,57 @@
 package pro.tompark.leetcode.days30.may;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * You're given strings J representing the types of stones that are jewels, and S representing the stones you have.
- * Each character in S is a type of stone you have.  You want to know how many of the stones you have are also jewels.
+ * Given an arbitrary ransom note string and another string containing letters from all the magazines,
+ * write a function that will return true if the ransom note can be constructed from the magazines ;
+ * otherwise, it will return false.
  *
- * The letters in J are guaranteed distinct, and all characters in J and S are letters. Letters are case sensitive,
- * so "a" is considered a different type of stone from "A".
+ * Each letter in the magazine string can only be used once in your ransom note.
  *
- * Example 1:
- *
- * Input: J = "aA", S = "aAAbbbb"
- * Output: 3
- * Example 2:
- *
- * Input: J = "z", S = "ZZ"
- * Output: 0
  * Note:
+ * You may assume that both strings contain only lowercase letters.
  *
- * S and J will consist of letters and have length at most 50.
- * The characters in J are distinct.
- *    Hide Hint #1
- * For each stone, check if it is a jewel.
+ * canConstruct("a", "b") -> false
+ * canConstruct("aa", "ab") -> false
+ * canConstruct("aa", "aab") -> true
  */
-public class Day2JewelsAndStones {
+public class Day3RansomNote {
 
     public static void main(String[] args) {
-        String J = "aA";
-        String S = "aAAbbbb";
+        String ransomNote = "aa";
+        String magazine = "aab";
 
-        J = "z";
-        S = "ZZ";
+        ransomNote = "a";
+        magazine = "b";
 
-        System.out.println(numJewelsInStones(J, S));
+        ransomNote = "aa";
+        magazine = "bb";
+
+        System.out.println(canConstruct(ransomNote, magazine));
     }
 
-    public static int numJewelsInStones(String J, String S) {
-        if (J == null || J.length() == 0 || S == null || S.length() == 0) return 0;
+    public static boolean canConstruct(String ransomNote, String magazine) {
+        if (ransomNote == null || magazine == null) return false;
 
-        Set<Character> jewelSet = new HashSet<>();
-        char[] jewels = J.toCharArray();
-        for (char jewel : jewels) {
-            jewelSet.add(jewel);
+        Map<Character, Integer> ransomMap = new HashMap<>();
+        for(char ransom : ransomNote.toCharArray()) {
+            Integer count = ransomMap.getOrDefault(ransom, 0);
+            ransomMap.put(ransom, count + 1);
         }
 
-        int num = 0;
-        char[] stones = S.toCharArray();
-        for (char stone : stones) {
-            if (jewelSet.contains(stone)) {
-                num++;
+        for(char mag : magazine.toCharArray()) {
+            if(ransomMap.containsKey(mag)) {
+                int count = ransomMap.get(mag) - 1;
+                if (count == 0) {
+                    ransomMap.remove(mag);
+                } else {
+                    ransomMap.put(mag, count);
+                }
             }
         }
 
-        return num;
+        return ransomMap.size() == 0;
     }
 }
