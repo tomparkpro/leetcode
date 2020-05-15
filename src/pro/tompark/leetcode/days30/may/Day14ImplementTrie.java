@@ -1,17 +1,18 @@
 package pro.tompark.leetcode.days30.may;
 
+import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Implement Trie (Prefix Tree)
- *
+ * <p>
  * Implement a trie with insert, search, and startsWith methods.
- *
+ * <p>
  * Example:
- *
+ * <p>
  * Trie trie = new Trie();
- *
+ * <p>
  * trie.insert("apple");
  * trie.search("apple");   // returns true
  * trie.search("app");     // returns false
@@ -19,7 +20,7 @@ import java.util.Set;
  * trie.insert("app");
  * trie.search("app");     // returns true
  * Note:
- *
+ * <p>
  * You may assume that all inputs are consist of lowercase letters a-z.
  * All inputs are guaranteed to be non-empty strings.
  */
@@ -44,35 +45,57 @@ public class Day14ImplementTrie {
      * boolean param_3 = obj.startsWith(prefix);
      */
     static class Trie {
-        Set<String> set;
+        private Trie[] children;
+        private boolean isEndOfWord;
 
-        /** Initialize your data structure here. */
+        /**
+         * Initialize your data structure here.
+         */
         public Trie() {
-            set = new HashSet<>();
+            children = new Trie[26];
+            isEndOfWord = false;
         }
 
-        /** Inserts a word into the trie. */
+        /**
+         * Inserts a word into the trie.
+         */
         public void insert(String word) {
-            set.add(word);
+            Trie curr = this;
+            for (char c : word.toCharArray()) {
+                if (curr.children[c - 'a'] == null) {
+                    curr.children[c - 'a'] = new Trie();
+                }
+                curr = curr.children[c - 'a'];
+            }
+            curr.isEndOfWord = true;
         }
 
-        /** Returns if the word is in the trie. */
+        /**
+         * Returns if the word is in the trie.
+         */
         public boolean search(String word) {
-            return set.contains(word);
-        }
-
-        /** Returns if there is any word in the trie that starts with the given prefix. */
-        public boolean startsWith(String prefix) {
-            boolean found = false;
-
-            for (String word : set) {
-                if (word.startsWith(prefix)) {
-                    found = true;
-                    break;
+            Trie curr = this;
+            for (char c : word.toCharArray()) {
+                curr = curr.children[c - 'a'];
+                if (curr == null) {
+                    return false;
                 }
             }
+            return curr.isEndOfWord;
+        }
 
-            return found;
+        /**
+         * Returns if there is any word in the trie that starts with the given prefix.
+         */
+        public boolean startsWith(String prefix) {
+            Trie curr = this;
+            for (char c : prefix.toCharArray()) {
+                curr = curr.children[c - 'a'];
+                if (curr == null) {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
