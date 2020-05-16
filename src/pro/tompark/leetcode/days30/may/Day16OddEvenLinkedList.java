@@ -56,6 +56,29 @@ public class Day16OddEvenLinkedList {
      */
     static ListNode oddEvenList(ListNode head) {
         if (head == null || head.next == null) return head;
+        ListNode oddHead = head;
+        ListNode evenHead = head.next;
+        ListNode odd = oddHead;
+        ListNode even = evenHead;
+
+        while (even != null) {
+            if (even.next != null) {
+                odd.next = even.next;
+            } else {
+                odd.next = evenHead;
+                return oddHead;
+            }
+            odd = odd.next;
+            even.next = odd.next;
+            even = even.next;
+        }
+
+        odd.next = evenHead;
+        return oddHead;
+    }
+
+    static ListNode oddEvenList2(ListNode head) {
+        if (head == null || head.next == null) return head;
 
         ListNode even = null;
         ListNode oddTail = head;
