@@ -51,7 +51,58 @@ public class Day17FindAllAnagramsInAString {
         }
     }
 
+
     static List<Integer> findAnagrams(String s, String p) {
+        List<Integer> anagrams = new ArrayList<>();
+        if (s == null || p == null || s.length() < p.length()) return anagrams;
+        int[] sCount = new int[26];
+        int[] pCount = new int[26];
+        for (char c : p.toCharArray()) {
+            pCount[c - 'a']++;
+        }
+
+        int plen =  p.length();
+
+        for (int i = 0; i < s.length(); i++) {
+            sCount[s.charAt(i) - 'a']++;
+
+            if (i >= plen) {
+                sCount[s.charAt(i - plen) - 'a']--;
+            }
+
+            if (Arrays.equals(sCount, pCount)) {
+                anagrams.add(i - plen + 1);
+            }
+        }
+
+        return anagrams;
+    }
+
+    static List<Integer> findAnagrams1(String s, String p) {
+        List<Integer> result = new ArrayList<>();
+        if (s == null || p == null || s.length() < p.length()) return result;
+
+        int[] charCount = new int[26];
+        for (char c : p.toCharArray()) {
+            charCount[c - 'a']++;
+        }
+
+        int left =  0;
+        int right = 0;
+        int count = p.length();
+
+        while (right < s.length()) {
+            if (charCount[s.charAt(right) - 'a']-- >=  1) count--;
+
+            if (count == 0) result.add(left);
+
+            if (right - left == p.length() && charCount[s.charAt(left++) - 'a']++ >= 0) count++;
+        }
+
+        return result;
+    }
+
+    static List<Integer> findAnagrams2(String s, String p) {
         List<Integer> anagrams = new ArrayList<>();
         if (s == null || p == null || s.length() < p.length()) return anagrams;
         char[] pp = p.toCharArray();
