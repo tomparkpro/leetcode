@@ -1,5 +1,8 @@
 package pro.tompark.leetcode.days30.may;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Online Stock Span
  *
@@ -54,9 +57,34 @@ public class Day19OnlineStockSpan {
 
     static class StockSpanner {
 
-        Stock stock;
+        private List<Integer> prices;
+        private List<Integer> spans;
 
         public StockSpanner() {
+            prices = new ArrayList<>();
+            spans = new ArrayList<>();
+        }
+
+        public int next(int price) {
+            int idx = prices.size() - 1;
+            while (idx >= 0 && prices.get(idx) <= price) {
+                int span = spans.get(idx);
+                idx = idx - span;
+            }
+
+            prices.add(price);
+            int span = prices.size() - 1 - idx;
+            spans.add(span);
+
+            return span;
+        }
+    }
+
+    static class StockSpanner2 {
+
+        Stock stock;
+
+        public StockSpanner2() {
         }
 
         public int next(int price) {
