@@ -42,12 +42,55 @@ public class Day26PossibleBipartition {
         int[][] dislikes = {{1,2},{2,3},{3,4},{4,5},{1,5}};
         int N = 5;
 
+
         System.out.println(possibleBipartition(N, dislikes));
+    }
+
+    public static boolean possibleBipartition(int N, int[][] dislikes) {
+        List<List<Integer>> adjList = new ArrayList<>();
+
+        boolean[] visited = new boolean[N];
+        boolean[] color = new boolean[N];
+
+        for (int i = 0; i < N; i++) {
+            adjList.add(new ArrayList<>());
+        }
+        for (int[] d : dislikes) {
+            int a = d[0] - 1;
+            int b = d[1] - 1;
+            adjList.get(a).add(b);
+            adjList.get(b).add(a);
+        }
+
+        for (int i = 0; i < N; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                boolean res = isBipartiteDfs(i, adjList, visited, color);
+                if (!res) return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean isBipartiteDfs(int cur, List<List<Integer>> adjList, boolean[] visited, boolean[] color) {
+        for (int next : adjList.get(cur)) {
+            if (!visited[next]) {
+                visited[next] = true;
+                color[next] = !color[cur];
+                boolean res = isBipartiteDfs(next, adjList, visited, color);
+                if (!res) return false;
+            } else if (color[cur] == color[next]){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // union found split two group
     // GroupA : all hate b, GroupB: all hate a;
-    public static boolean possibleBipartition(int N, int[][] dislikes) {
+    public static boolean possibleBipartition1(int N, int[][] dislikes) {
         int[] group = new int[N+1];
         for (int i = 0; i <= N; i++) {
             group[i] = i; // initial
