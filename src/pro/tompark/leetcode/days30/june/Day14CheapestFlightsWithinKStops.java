@@ -56,53 +56,53 @@ public class Day14CheapestFlightsWithinKStops {
 
     public static class Solution {
 
-        Map<Integer, List<Trip>> tripMap;
-
-        // Dijkstra's Algo Varient
-        // Heap -> BFS
-
-        // Time complexity
         public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
-            populateTripMap(flights); // O(m)
+            // define Trip class
 
-            // Heap
+            // populate Adj Map <Integer, List<Trip>>
+            Map<Integer, List<Trip>> tripMap = populateTripMap(flights);
+
+            // heap using PriorityQueue
             PriorityQueue<Trip> heap = new PriorityQueue<>(flights.length, Comparator.comparingInt(a -> a.cost));
 
-            // Setup BFS // O(log m)
+            // setup BFS
             heap.addAll(tripMap.getOrDefault(src, Collections.emptyList()));
 
-            // BFS
+            // search node using Dijkstra Algo
             while (!heap.isEmpty()) {
                 Trip lowest = heap.poll();
+
+                // checking the dst
                 if (lowest.dst == dst) {
                     return lowest.cost;
                 }
 
-                // number of stops check
+                // pruning the edges(stops)
                 if (lowest.stops == K) {
                     continue;
                 }
 
-                // all all the flights from cheapest destination
+                // add all edges(trips) from lowest.dst
                 for (Trip trip : tripMap.getOrDefault(lowest.dst, Collections.emptyList())) {
                     heap.add(new Trip(trip.dst, lowest.cost + trip.cost, lowest.stops + 1));
                 }
             }
 
+            // return cost or -1
             return -1;
         }
 
-        private void populateTripMap(int[][] flights) {
-            tripMap = new HashMap<>();
-
+        private Map<Integer, List<Trip>> populateTripMap(int[][] flights) {
+            Map<Integer, List<Trip>> tripMap = new HashMap<>();
             for (int[] flight : flights) {
                 List<Trip> trips = tripMap.getOrDefault(flight[0], new ArrayList<>());
                 trips.add(new Trip(flight[1], flight[2], 0));
                 tripMap.put(flight[0], trips);
             }
+            return tripMap;
         }
 
-        class Trip {
+        public class Trip {
             int dst;
             int cost;
             int stops;
