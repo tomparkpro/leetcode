@@ -27,7 +27,7 @@ package pro.tompark.leetcode.days30.july;
  *
  * Explanation: The perimeter is the 16 yellow stripes in the image below:
  */
-public class Day8IslandPerimeter {
+public class Day7IslandPerimeter {
 
     public static void main(String[] args) {
         int[][] grid = {

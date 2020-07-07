@@ -21,7 +21,7 @@ package pro.tompark.leetcode.days30.july;
  * Output: [4,3,2,2]
  * Explanation: The array represents the integer 4321.
  */
-public class Day7PlusOne {
+public class Day6PlusOne {
 
     public static void main(String[] args) {
 //        int[] digits = {1, 2, 3};
