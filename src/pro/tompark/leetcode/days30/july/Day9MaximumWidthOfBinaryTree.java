@@ -72,6 +72,12 @@ public class Day9MaximumWidthOfBinaryTree {
         System.out.println(widthOfBinaryTree(root));
     }
 
+    /**
+     * add position idx to each node from root
+     *                     0 (root)  idx=0
+     *                   /    \
+     *     2*idx + 1 (left)  2*idx + 2 (right)
+     */
     static int widthOfBinaryTree(TreeNode root) {
         if (root == null) return 0;
         int result = 1;
